@@ -20,11 +20,11 @@ In this repository, we will see:
 # How can I implement different, more complex automatization steps for a MATLAB2CATPART connection?
 Probabily one of the most interesting part of this repository is the number 2) of the following list. In this repository we only show how very simple object creation processes in CATIA can be automatized in MATLAB. If you want to automatize more complex design process and you have a basic knowledge of VBA, you can follow these steps:
 
--a) First conduct the set of manual tasks which you want to automatize in CATIA (example create a new sketch, pad, etc.)
--b) While you are doing this, activate the VBA macro recorder (More information to this regard [HERE](https://www.youtube.com/watch?v=kKFdi-owlXM)).
--c) Once you are done you can stop the recorder
--d) In the VBA editor, you will see that most of the tasks you have conducted (sadly some tasks are not recored by default) will have been translated in VBA code.
--e) Now you can translate this code in MATLAB and relauch it from MATLAB to reproduce the same tasks in an automatize way.
+- a) First conduct the set of manual tasks which you want to automatize in CATIA (example create a new sketch, pad, etc.)
+- b) While you are doing this, activate the VBA macro recorder (More information to this regard [HERE](https://www.youtube.com/watch?v=kKFdi-owlXM)).
+- c) Once you are done you can stop the recorder
+- d) In the VBA editor, you will see that most of the tasks you have conducted (sadly some tasks are not recored by default) will have been translated in VBA code.
+- e) Now you can translate this code in MATLAB and relauch it from MATLAB to reproduce the same tasks in an automatize way.
 
 The last step (translating VBA in MATLAB code) may seem challenging. On the contrary, it is a quite intuitive task. The scope of this repository is to show how most of the basis VBA tasks can be translated in MATLAB by using the commads "get", "invoke", and "set".
 
