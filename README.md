@@ -78,13 +78,12 @@ Once the stl file is saved, it is possible to import it directly in MATLAB. For 
 ```
 RIM = stl_file('Rim.stl')                    %Import Rim.stl in MATLAB with the class stl_file and assign it to the variable RIM
 ```
-The class offers a set of basis functionalities such as translation, mirroring, rotation, and plot of the STL file. This properties are documented in directly in the class file. Furthermore, an example script which shows how to employ the properties of the ```stl_file``` class is documented in the script ```stl_file```
-[CATPART2MATLAB_example.m](../02_CATPART2MATLAB/CATPART2MATLAB_example.m).
+The class offers a set of basis functionalities such as translation, mirroring, rotation, and plot of the STL file. This properties are documented in directly in the class file. Furthermore, an example script which shows how to employ the properties of the ```stl_file``` class is documented in the script [```CATPART2MATLAB_example.m```](../02_CATPART2MATLAB/CATPART2MATLAB_example.m).
 
 Exporting and modifing STL files is not the only way to plot 3D objects in MATLAB. To show the potential of the MATLAB functions, the ```MATLAB2CATPart_examples.m``` also shows hot to plot elementary objects such as cubes and cylinder by solely using MATLAB functions. For this scope, the functions [plot_cube.m](../02_CATPART2MATLAB/plot_cube.m) and [plot_cylinder.m](../02_CATPART2MATLAB/plot_cylinder.m) are created. The script ```MATLAB2CATPart_examples.m``` combines MATLAB function with STL file to visualize a complex assembbly - in this case an electric vehicle powertrain - in MATLAB. As a final result, the script yields the following MATLAB plot:
 
 <p align="center">
-<img src="/04_Pictures/Figure_2.png?raw=true" alt="The cube object which will be used as an example for this section"/>
+<img src="/04_Pictures/Figure_3.png?raw=true" alt="The cube object which will be used as an example for this section"/>
 </p>
 
 
