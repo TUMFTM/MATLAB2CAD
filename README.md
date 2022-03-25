@@ -3,16 +3,30 @@ Developed by: Lorenzo Nicoletti, Institute of Automotive Technology, Technical U
 
 This repository contains a series of examples to create a direct connection between MATLAB and CATIA V5 **without having to use Excel**. This direct connection enables to update CATIA models from MATLAB and also to retrieve calculated data from CATIA to MATLAB
 
-Disclaimer: Let me know in the comments if you have feedbacks or further examples you would like to see! I will try to add them in the scripts!
+**Let me know in the comments if you have feedbacks or further examples you would like to see! I will try to add them!**
 
 # Background and Motivation
-For the ones who are not very confident with CATIA, the basis language to programm Macros in CATIA is VBA. Using the VBA editor (Tools/Macro/Visual Basic Editor) it is possible to automatize a broad set of tasks by building VBA Macros. VBA has a direct connection to CATIA but its editor is not one of the best programming enviroments and when complex models are required, the calculation step is usually done with other programs. One programming language which is gaining momentum among the engineers is MATLAB and there are also more and more cases where MATLAB-implemented parametric tools are connected with parametric CATIA-models: Examples could be a parametric CATIA model which requires, for some of its parameters, a calculation in MATLAB. We will denote this case as a MATLAB2CAD connection.
+For the ones who are not very confident with CATIA, the basic language to program in CATIA is VBA. Using the VBA editor (Tools/Macro/Visual Basic Editor) it is possible to automatize a broad set of tasks by building VBA Macros. VBA has a direct connection to CATIA but its editor is not one of the best programming environments and, if complex models are required, these models are usually implemented in other programs. One programming language that keeps gaining momentum among engineers is MATLAB and there are many cases where MATLAB-implemented models are are connected with CATIA to visualize the results. In this cases, CATIA is often used exclusevly for visualization purposes. We will denote this case as a MATLAB2CAD connection.
 
-When a MATLAB2CAD connection is required, the most common solution is to create a parametric model in CATIA and connect it with an Excel table. MATLAB can then calculate the required parameters and store them in the Excel table. Finally, once the Excel table is reclosed and saved, the CATIA model will notice that the entries of the table have been changed and update itself. Although such a process works fine, it is slow and requires the usage of three different programms. Therefore the question arises: **is it possible to create a MATLAB2CAD connection without having to use Excel?** The answer is, of yourse, yes.
+When a MATLAB2CAD connection is required, the most common solution is to create a parametric model in CATIA and connect it with an Excel table. MATLAB can then calculate the required parameters and store them in the Excel table. Finally, once the Excel table is reclosed and saved, CATIA will notice that the entries of the table have been changed and will update. This process can take - depedning on the CATIA model complexity - several minutes and requires the usage of three different programs (MATLAB, CATIA, and Excel). Therefore the question arises:
+**is it possible to create a MATLAB2CAD connection without having to use Excel?** The answer is, of course, yes.
 
-One good way to programm in MATLAB for CATIA is by first programming the desired code in VBA and subsequently translating this code in the MATLAB format. For this scope, you can use the Macro recorder feature implemented in CATIA (More information to this regard [HERE](https://www.youtube.com/watch?v=kKFdi-owlXM)). After activating the macro recorder, you can conduct a series of manual tasks in CATIA (creating new bodies, sketches etc.). Once you are done, you can stop the macro recorder: at this point, most of the task you have conducted (sadly some tasks are not recored by default) will have been translated in VBA code.
+In this repository, we will see: 
+- 1) How to update parametric CATParts from MATLAB
+- 2) How to create new objects (Sketches, Pads) in CATIA by using exclusively MATLAB code
+- 3) How to plot object created in CATIA in MATLAB (we denote this case as CATPART2MATLAB connection)
+- 4) How to control and update parametric CATProducts from MATLAB (we denote this case as CATPRODUCT2MATLAB connection)
 
-Now the challenge is to translate this VBA code in MATLAB. The scope of this repository is to show how most of the basis VBA tasks can be translated in MATLAB by using the commads "get", "invoke", and "set". Furthermore, you do not necessarly need to know VBA in order to use the function presented in this repository.
+# How can I implement different, more complex automatization steps for a MATLAB2CATPART connection?
+Probabily one of the most interesting part of this repository is the number 2) of the following list. In this repository we only show how very simple object creation processes in CATIA can be automatized in MATLAB. If you want to automatize more complex design process and you have a basic knowledge of VBA, you can follow these steps:
+
+-a) First conduct the set of manual tasks which you want to automatize in CATIA (example create a new sketch, pad, etc.)
+-b) While you are doing this, activate the VBA macro recorder (More information to this regard [HERE](https://www.youtube.com/watch?v=kKFdi-owlXM)).
+-c) Once you are done you can stop the recorder
+-d) In the VBA editor, you will see that most of the tasks you have conducted (sadly some tasks are not recored by default) will have been translated in VBA code.
+-e) Now you can translate this code in MATLAB and relauch it from MATLAB to reproduce the same tasks in an automatize way.
+
+The last step (translating VBA in MATLAB code) may seem challenging. On the contrary, it is a quite intuitive task. The scope of this repository is to show how most of the basis VBA tasks can be translated in MATLAB by using the commads "get", "invoke", and "set".
 
 # MATLAB2CATPart
 As example a cube (named Cube.CATPart) is given. The cube is built as parametrized CATIA models (More information regarding how to create a parametrized CATIA model can be found [HERE](https://grabcad.com/tutorials/parametric-design-in-catia-v5)) and its dimensions are controlled by the three parameters _Cube_length_, _Cube_width_, and _Cube_height_. With the three parameters it is possible to change the cube dimensions. In the example shown in this section, we are going to see how to programmatically change the cube dimension with MATLAB. 
@@ -66,7 +80,7 @@ invoke(Cube,'update')                                   VBA CODE: Cube.Update
 ```
 In the first script, you will see a series of example regarding how to create objects, change their appearance, introduce new formulas and parameters, etc. 
 
-# CATPart2MATLAB
+# CATPART2MATLAB
 It is also possible to invert the process and to export CATPart in MATLAB. Let us suppose that we have a CATPart, in this example a vehicle rim as shown in the figure underneath:
 
 <p align="center">
