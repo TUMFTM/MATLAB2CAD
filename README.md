@@ -16,10 +16,10 @@ Now the challenge is to translate this VBA code in MATLAB. The scope of this rep
 
 # MATLAB2CATPart
 As example a cube (named Cube.CATPart) is given. The cube is built as parametrized CATIA models (More information regarding how to create a parametrized CATIA model can be found [HERE](https://grabcad.com/tutorials/parametric-design-in-catia-v5)) and its dimensions are controlled by the three parameters _Cube_length_, _Cube_width_, and _Cube_height_. With the three parameters it is possible to change the cube dimensions. In the example shown in this section, we are going to see how to programmatically change the cube dimension with MATLAB. 
-More examples applied on the Cube.CATPart file are documented in [THIS SCRIPT](../01_MATLAB2CATPart/MATLAB2CATPart_examples.m).
+More examples applied on the Cube.CATPart file are documented in [MATLAB2CATPart_examples.m](../01_MATLAB2CATPart/MATLAB2CATPart_examples.m).
 
 <p align="center">
-<img src="/Pictures/Figure_1.png?raw=true" alt="The cube object which will be used as an example for this section"/>
+<img src="/04_Pictures/Figure_1.png?raw=true" alt="The cube object which will be used as an example for this section"/>
 </p>
 
 In the following paragraphs, the MATLAB code is showed next to the corresponding VBA code: this helps understanding how the VBA code can be translated in MATLAB. First of all, MATLAB has to create a connection with CATIA. This is achieved as follows:
@@ -70,10 +70,24 @@ In the first script, you will see a series of example regarding how to create ob
 It is also possible to invert the process and to export CATPart in MATLAB. Let us suppose that we have a CATPart, in this example a vehicle rim as shown in the figure underneath:
 
 <p align="center">
-<img src="/Pictures/Figure_2.png?raw=true" alt="The cube object which will be used as an example for this section"/>
+<img src="/04_Pictures/Figure_2.png?raw=true" alt="The cube object which will be used as an example for this section"/>
 </p>
 
 It is possible to export the CATPart to MATLAB. For this scope, the CATPart has to be first saved as STL file, thus generating the file Rim.stl
+Once the stl file is saved, it is possible to import it directly in MATLAB. For this scope, the class ```stl_file``` documented in this repository was created:
+```
+RIM = stl_file('Rim.stl')                    %Import Rim.stl in MATLAB with the class stl_file and assign it to the variable RIM
+```
+The class offers a set of basis functionalities such as translation, mirroring, rotation, and plot of the STL file. This properties are documented in directly in the class file. Furthermore, an example script which shows how to employ the properties of the ```stl_file``` class is documented in the script ```stl_file```
+[CATPART2MATLAB_example.m](../02_CATPART2MATLAB/CATPART2MATLAB_example.m).
+
+Exporting and modifing STL files is not the only way to plot 3D objects in MATLAB. To show the potential of the MATLAB functions, the ```MATLAB2CATPart_examples.m``` also shows hot to plot elementary objects such as cubes and cylinder by solely using MATLAB functions. For this scope, the functions [plot_cube.m](../02_CATPART2MATLAB/plot_cube.m) and [plot_cylinder.m](../02_CATPART2MATLAB/plot_cylinder.m) are created. The script ```MATLAB2CATPart_examples.m``` combines MATLAB function with STL file to visualize a complex assembbly - in this case an electric vehicle powertrain - in MATLAB. As a final result, the script yields the following MATLAB plot:
+
+<p align="center">
+<img src="/04_Pictures/Figure_2.png?raw=true" alt="The cube object which will be used as an example for this section"/>
+</p>
+
+
 
 
 
