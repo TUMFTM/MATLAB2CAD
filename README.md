@@ -17,7 +17,7 @@ In this repository, we will see:
 - 3) How to plot object created in CATIA in MATLAB (we denote this case as CATPART2MATLAB connection)
 - 4) How to control and update parametric CATProducts from MATLAB (we denote this case as CATPRODUCT2MATLAB connection)
 
-# How can I implement different, more complex automatization steps for a MATLAB2CATPART connection?
+# How can I implement more complex processes in a MATLAB2CATPART connection?
 Probabily one of the most interesting part of this repository is the number 2) of the following list. In this repository we only show how very simple object creation processes in CATIA can be automatized in MATLAB. If you want to automatize more complex design process and you have a basic knowledge of VBA, you can follow these steps:
 
 - a) First conduct the set of manual tasks which you want to automatize in CATIA (example create a new sketch, pad, etc.)
@@ -88,19 +88,54 @@ It is also possible to invert the process and to export CATPart in MATLAB. Let u
 </p>
 
 It is possible to export the CATPart to MATLAB. For this scope, the CATPart has to be first saved as STL file, thus generating the file Rim.stl
-Once the stl file is saved, it is possible to import it directly in MATLAB. For this scope, the class ```stl_file``` documented in this repository was created:
+Once the stl file is saved, it is possible to import it directly in MATLAB. For this scope, the class [```stl_file```](../02_CATPART2MATLAB/stl_file.m) was created. Calling the class with the link where the .stl file is saved creates a MATLAB import of the .stl object:
 ```
 RIM = stl_file('Rim.stl')                    %Import Rim.stl in MATLAB with the class stl_file and assign it to the variable RIM
 ```
 The class offers a set of basis functionalities such as translation, mirroring, rotation, and plot of the STL file. This properties are documented in directly in the class file. Furthermore, an example script which shows how to employ the properties of the ```stl_file``` class is documented in the script [```CATPART2MATLAB_example.m```](../02_CATPART2MATLAB/CATPART2MATLAB_example.m).
 
-Exporting and modifing STL files is not the only way to plot 3D objects in MATLAB. To show the potential of the MATLAB functions, the ```MATLAB2CATPart_examples.m``` also shows hot to plot elementary objects such as cubes and cylinder by solely using MATLAB functions. For this scope, the functions [plot_cube.m](../02_CATPART2MATLAB/plot_cube.m) and [plot_cylinder.m](../02_CATPART2MATLAB/plot_cylinder.m) are created. The script ```MATLAB2CATPart_examples.m``` combines MATLAB function with STL file to visualize a complex assembbly - in this case an electric vehicle powertrain - in MATLAB. As a final result, the script yields the following MATLAB plot:
+Exporting and modifing STL files is not the only way to plot 3D objects in MATLAB. To show the potential of the MATLAB functions, the ```MATLAB2CATPart_examples.m``` also shows hot to plot elementary objects such as cubes and cylinder by solely using MATLAB functions. For this scope, the functions [plot_cube.m](../02_CATPART2MATLAB/plot_cube.m) and [```plot_cylinder.m```](../02_CATPART2MATLAB/plot_cylinder.m) are created. The script ```MATLAB2CATPart_examples.m``` combines MATLAB function with STL file to visualize a complex assembbly - in this case an electric vehicle powertrain - in MATLAB. As a final result, the script yields the following MATLAB plot:
 
 <p align="center">
 <img src="/04_Pictures/Figure_3.png?raw=true" alt="The cube object which will be used as an example for this section"/>
 </p>
 
+# MATLAB2CATPRODUCT
+The workflow of a MATLAB2CATPRODUCT is similar to a MATLAB2CATPART connection, but more compolex. The first problem is, that in order to create a parametric assembly of different subproducts (each one with its own parameters) a few important steps have to be followed
+- First of all the assembly can be created in CATIA by importing or creating the single CATPARTs.
+- Secondly, a new component, (which is denoted as ```Parameters``` in our example). Is added to the Assembly.
+- ```Parameters``` can be used as the fixed reference Coordinate System for the assembly and to store the assembly's parameters
+-  In the component ```Parameters``` it is now possible to initialize all the parameters required for the assembly.
+-  If you have the extension Knowledgeware/Knowledge Advisor it is also possible to organize the Parameters in sets
+-  Once all the parameters are defined, it is necessary to publish them. By publishing the parameters you make them visible (and therefore linkable) to all the subproducts contained in the assembly. If you do not publish they parameters, they will be usable only within the subproduct ```Parameters``` and could not be used by other subproducts such as ```Cube_part_1```.
+-  The Publications can now be linked within the other subproduct. To do so it is necessary to copy them and then paste them in the subproduct node where they are required by using the option Paste/As a Result with Link
+-  The Parameters will now appear in a separate set named "External Parameters"
+-  You can now connect these parameters with the local parameter declared in the Subproduct
+-  With this solution you have a single Subproduct node (uin this case ```Parameters```) where it is possible to set all the Parameters of the assembly.
 
+This can be achieved as follows. First of all we have to retrieve (as already done in  MATLAB2CATPart) 
+```
+catia = actxserver('catia.application');                    VBA Code: Not required for this step
+Docs = get(catia,'Documents');                              VBA Code: Set Docs = CATIA.Documents
+```
+Once the variables are initialized we can select the Product document containing the assembly:
+```
+Docprod = invoke(Docs,'Item','Cube_Assembly.CATProduct');   VBA Code: Set Docprod = Docs.Item("Cube_Assembly.CATProduct")
+```
+And subsequently select the list of products in the assembly
+```
+Assembly = get(Docprod,'product');                          VBA Code: Set Assembly = Docprod.Product
+Assembly_prods = get(Assembly,'products');                  VBA Code: Set Assembly_prods = Assembly.Products
+```
+From the list, we now select the Subproduct parameters, which contains the list of parameters and the corresponding pubblications
+```
+Param_prod = invoke(Assembly_prods,'Item','Parameters');    VBA Code: Set Param_prod = Assembly_prods.Item("Parameters")
+```
+Finally, from the variable ```Param_prod``` we can select the Publications of the assembly:
+```
+Publications = get(Param_prod,'Publications');              VBA Code: Set Publications = Param_prod.Publications
+```
+With this variable, we are now able to read and set all the parameters of the assembly. The procedure to achieve this is documented in the script [```MATLAB2CATPRODUCT.m```](../03_MATLAB2CATPRODUCT/MATLAB2CATPRODUCT.m).
 
 
 
