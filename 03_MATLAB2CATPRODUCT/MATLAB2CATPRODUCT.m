@@ -79,8 +79,8 @@ Param_prod = invoke(Assembly_prods,'Item','Parameters');
 % Select the Publications of the Prameters Prod
 Publications = get(Param_prod,'Publications');
 
-Newcube_dim = 1000;
-Newcube_offset = 500;
+Newcube_dim = 100;
+Newcube_offset = 200;
 
 % Set the dimensions of the cube to a value of 100 mm
 for i = 1: Publications.get('Count')
@@ -110,7 +110,6 @@ for i = 1: Publications.get('Count')
     end
     
 end
-
 
 Assembly.invoke('Update');
 
