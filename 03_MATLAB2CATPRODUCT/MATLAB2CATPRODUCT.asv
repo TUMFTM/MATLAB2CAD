@@ -1,3 +1,14 @@
+% Designed by: Lorenzo Nicoletti (FTM, Technical University of Munich)
+%-------------
+% Created on: 10.03.2022
+% ------------
+% Version: Matlab2020b
+%-------------
+% Description: In this script there are different section to perform different tasks on
+%              a given CATIA Assembly.
+%              Also compare the documentation in the README of this
+%              repository.
+% ------------
 %% PREPROCESSING: The variables declared in this section are required for the other sections!
 % Create a connection with the CATIA Application
 catia = actxserver('catia.application');
@@ -18,7 +29,6 @@ Docprod = invoke(Docs,'Item','Cube_Assembly.CATProduct');
 % Select the uppermost node of the CATIA tree -> This is the master node of the CATPart
 Assembly = get(Docprod,'product'); % In the first figure in the README this is the node "Cube_part"
 
-
 % Get the list of products contained in the assembly
 Assembly_prods = get(Assembly,'products');
 
@@ -38,11 +48,13 @@ for i = 1 : Publications.get('Count')
    str = [str,Pub.get('Name'),'\n'];     
 end
 
+sprintf(str)
 
+
+str = 'The Product contains the following subproducts\n';
 for i = 1 : Assembly_prods.get('Count')
-   Assembly_prods.                      
-   Pub = Publications.invoke('Item',i);
-   str = [str,Pub.get('Name'),'\n'];     
+   Prod = Assembly_prods.invoke('Item',i);                    
+   str = [str,Prod.get('Name'),'\n'];     
 end
     
 %Print the list of publications

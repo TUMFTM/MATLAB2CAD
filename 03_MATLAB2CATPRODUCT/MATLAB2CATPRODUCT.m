@@ -1,8 +1,19 @@
+% Designed by: Lorenzo Nicoletti (FTM, Technical University of Munich)
+%-------------
+% Created on: 10.03.2022
+% ------------
+% Version: Matlab2020b
+%-------------
+% Description: In this script there are different section to perform different tasks on
+%              a given CATIA Assembly.
+%              Also compare the documentation in the README of this
+%              repository.
+% ------------
 %% PREPROCESSING: The variables declared in this section are required for the other sections!
 % Create a connection with the CATIA Application
 catia = actxserver('catia.application');
 
-% The Cube.CATPart must already be opened in CATIA. Check if this is the case
+% The Cube_Assembly.CATProduct MUST already be opened in CATIA. Check if this is the case
 try invoke(get(catia, 'Windows'),'Item','Cube_Assembly.CATProduct')
 catch 
     errordlg('BEFORE STARTING, OPEN THE FILE Cube_Assembly.CATProduct','Error');
@@ -12,12 +23,11 @@ end
 % Select all the opened documents
 Docs=get(catia,'Documents');
 
-% Select the Cube_Assembly.CATProduct document (This selects the whole document, not the "Part")
+% Select the Cube_Assembly.CATProduct document
 Docprod = invoke(Docs,'Item','Cube_Assembly.CATProduct');
 
 % Select the uppermost node of the CATIA tree -> This is the master node of the CATPart
 Assembly = get(Docprod,'product'); % In the first figure in the README this is the node "Cube_part"
-
 
 % Get the list of products contained in the assembly
 Assembly_prods = get(Assembly,'products');
