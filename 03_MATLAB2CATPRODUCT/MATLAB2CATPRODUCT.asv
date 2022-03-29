@@ -10,10 +10,10 @@
 %              repository.
 % ------------
 %% PREPROCESSING: The variables declared in this section are required for the other sections!
-% Create a connection with the CATIA Application
+% Create a connection with the CATIA V5
 catia = actxserver('catia.application');
 
-% The Cube.CATPart must already be opened in CATIA. Check if this is the case
+% The Cube_Assembly.CATProduct MUST already be opened in CATIA. Check if this is the case
 try invoke(get(catia, 'Windows'),'Item','Cube_Assembly.CATProduct')
 catch 
     errordlg('BEFORE STARTING, OPEN THE FILE Cube_Assembly.CATProduct','Error');
@@ -23,42 +23,52 @@ end
 % Select all the opened documents
 Docs=get(catia,'Documents');
 
-% Select the Cube_Assembly.CATProduct document (This selects the whole document, not the "Part")
+% Select the Cube_Assembly.CATProduct document
 Docprod = invoke(Docs,'Item','Cube_Assembly.CATProduct');
 
 % Select the uppermost node of the CATIA tree -> This is the master node of the CATPart
-Assembly = get(Docprod,'product'); % In the first figure in the README this is the node "Cube_part"
+Assembly = get(Docprod,'product'); 
 
-% Get the list of products contained in the assembly
+% Get the list of the products contained in the assembly
 Assembly_prods = get(Assembly,'products');
 
-%% 1) Explore the characteristics of the Product
+%% Implementation:
+%1) Retrieve list of subproducts and publications
+%2) Set all the Publications/Parameters to a given value
+%3) Change appearance to the first Cube:
 
-% Get the Product Parameters, which contains all the parameters of the assembly
+%% 1) Retrieve list of subproducts and publications
+%     List all the contained subproducts and publication names
+
+% Get the subproduct "Parameters", which stores the parameters of the assembly
 Param_prod = invoke(Assembly_prods,'Item','Parameters');
 
-
-% Select the Publications of the Prameters Prod
+% Select the Publications contained in "Parameters"
 Publications = get(Param_prod,'Publications');
 
-%List the available publications:
-str = 'The Product contains the following publications\n';
+% Loop the Publications list and create a list of the existing publications
+pub_list = 'The Product contains the following publications\n';
 for i = 1 : Publications.get('Count')
-   Pub = Publications.invoke('Item',i);
-   str = [str,Pub.get('Name'),'\n'];     
+   
+    Pub = Publications.invoke('Item',i);
+    pub_list = [pub_list,Pub.get('Name'),'\n'];     
+   
 end
 
-sprintf(str)
+% 
+sprintf(pub_list)
 
 
-str = 'The Product contains the following subproducts\n';
+subprod_list = 'The Product contains the following subproducts\n';
 for i = 1 : Assembly_prods.get('Count')
+    
    Prod = Assembly_prods.invoke('Item',i);                    
-   str = [str,Prod.get('Name'),'\n'];     
+   subprod_list = [subprod_list,Prod.get('Name'),'\n'];     
+   
 end
     
 %Print the list of publications
-sprintf(str)
+sprintf(subprod_list)
 
 
 %% 2) Set all the Publications/Parameters to a given value
@@ -156,31 +166,3 @@ invoke(cube_bolck_visprop,'SetRealWidth',input_4(5), 1);
 % Change line type of the cube edges
 invoke(cube_visprop,'SetRealLineType',input_4(6), 1);
 invoke(cube_bolck_visprop,'SetRealLineType',input_4(6), 1);
-
-%% 4) Add a new cube to the main product 
-
-sel1 = get(Docprod,'Selection')
-
-sel1.invoke('Clear')
-
-
-Cubeprod = invoke(Assembly_prods,'Item','Cube_part_1');
-
-sel1.invoke('Add', Cubeprod)
-
-sel1.invoke('Copy')
-
-
-
-sel1.invoke('Paste')
-
-% Update the cube
-invoke(Cube,'update')
-
-
-
-
-
-
-
-

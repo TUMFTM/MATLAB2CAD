@@ -63,7 +63,7 @@ invoke(objview3,'CaptureToFile', 1, 'Screenshot_cube.bmp')
 %     The dimensions of the cube will be changed directly from this MATLAB
 %     script. The desired dimensions can be set with the array "input_2"
 
-input_2 = [200, 200, 200]; %cube dimensions expressed as [Length, Width, Height] -> Unit is the default unit set in CATIA, in my case mm
+input_2 = [100, 100, 100]; %cube dimensions expressed as [Length, Width, Height] -> Unit is the default unit set in CATIA, in my case mm
 
 % Show the name of the selected object using the "Name" property
 disp(['The name of the selected object is ', get(Cube,'Name')]);
@@ -83,7 +83,7 @@ Cube_dim(1,3) = get(Par_matlab{3},'Value');
 
 % Set the parameters to the new values:
 set(Par_matlab{1},'Value',input_2(1));    %Set the length
-set(Par_matlab{2}, 'Value',input_2(2));    %Set the width
+set(Par_matlab{2}, 'Value',input_2(2));   %Set the width
 set(Par_matlab{3},'Value',input_2(3));    %Set the height
 
 % Store the NEW dimensions of the Cube in MATLAB
