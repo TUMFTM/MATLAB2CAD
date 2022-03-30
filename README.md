@@ -1,6 +1,9 @@
 # MATLAB2CAD
 Developed by: Lorenzo Nicoletti, Institute of Automotive Technology, Technical University of Munich, Boltzmannstr. 15, 85748 Garching, Germany
 
+Used MATLAB Version: MATLAB R2020b
+Used CATIA Version: CATIA V5 6-R2018
+
 This repository contains a series of examples to create a direct connection between MATLAB and CATIA V5 **without having to use Excel**. This direct connection enables to update CATIA models from MATLAB and also to retrieve calculated data from CATIA to MATLAB
 
 **Let me know in the comments if you have feedbacks or further examples you would like to see! I will try to add them!**
