@@ -33,13 +33,12 @@ Translating VBA into MATLAB code may seem challenging. On the contrary, it is a 
 
 # MATLAB2CATPart
 As an example a cube ([Cube.CATPart](../01_MATLAB2CATPart/Cube.CATPart)) is given. The cube is built as parametrized CATPart (More information regarding how to create a parametrized CATPart [HERE](https://grabcad.com/tutorials/parametric-design-in-catia-v5)) and its dimensions are controlled by three parameters: _Cube_length_, _Cube_width_, and _Cube_height_. In the example shown in this section, we are going to see how to programmatically change the cube dimension with MATLAB. 
-More examples applied on the Cube.CATPart are documented in [MATLAB2CATPart_examples.m](../01_MATLAB2CATPart/MATLAB2CATPart_examples.m).
 
 <p align="center">
 <img src="/04_Pictures/Figure_1.png?raw=true" alt="The cube object which will be used as an example for this section"/>
 </p>
 
-In the following paragraphs, the MATLAB code is shown next to the corresponding VBA code: this helps understanding how the VBA code can be translated into MATLAB code. Attention: For the code to work correctly, Cube.CATPart has to be opened in CATIA. First of all, we create a MATLAB connection with CATIA:
+In the following paragraphs, the MATLAB code is shown next to the corresponding VBA code: this helps understanding how the VBA code can be translated into MATLAB code. **Attention: For the code to work correctly, Cube.CATPart has to be opened in CATIA**. First of all, we create a MATLAB connection with CATIA:
 ```
 catia = actxserver('catia.application');                VBA Code: Not required for this step
 ```
@@ -63,9 +62,7 @@ Now the variable ```Cube``` represents a direct connection to the node _Cube_par
 ```
 Parameters = get(Cube, 'Parameters');                   VBA CODE: Set Parameters = Cube.Parameters
 ```
-The variable ```Parameters``` contains all the Parameters of ```Cube```, including _Cube_length_, _Cube_width_, and _Cube_height_ (visible in the CATIA tree) as well as a set of further parameters which are not visible in the CATIA tree.
-
-Let us suppose that we want to change _Cube_length_. First of all, we have to select from ```Parameters``` the corresponding Parameter _Cube_length_ and assign it to a new variable:
+The variable ```Parameters``` contains all the parameters of ```Cube```, including _Cube_length_, _Cube_width_, and _Cube_height_ (visible in the CATIA tree) as well as a set of further parameters which are not visible in the CATIA tree. If we want to change _Cube_length_, we have to create a connection with this parameter:
 ```
 Par_length = invoke(Parameters,'Item','Cube_length');   VBA CODE: Set Par_length = Parameters.Item("Cube_length")
 ```
@@ -73,34 +70,33 @@ Par_length = invoke(Parameters,'Item','Cube_length');   VBA CODE: Set Par_length
 ```
 Cube_length = get(Par_length,'Value');                  VBA CODE: Cube_length = Par_length.Value
 ```
-Or we can also use the connection contained in ```Par_length``` to change the value of _Cube_length_ from MATLAB:
+Or we can also use the connection to change the value of _Cube_length_ from MATLAB:
 ```
 set(Par_length,'Value',200);                            VBA CODE: Par_length.Value = 200
 ```
-At first, you may not see any result. This may be caused by the fact that CATIA does not automatically reupdate the model when its parameters are changed. Of course there is also a way to solve this problem programmatically:
+At first, you may not see any change in CATIA, because (depending on your specific settings) CATIA does not automatically reupdate the Cube.CATPart when its parameters are changed. We can impose the update programmatically from MATLAB:
 ```
 invoke(Cube,'update')                                   VBA CODE: Cube.Update
 ```
-In the first script, you will see a series of examples to create objects, change their appearance, introduce new formulas and parameters, etc. 
+In [MATLAB2CATPart_examples.m](../01_MATLAB2CATPart/MATLAB2CATPart_examples.m) you will find other examples to create objects, change their appearance, introduce new formulas and parameters, etc. 
 
 # CATPART2MATLAB
-It is also possible to invert the process and export CATPart in MATLAB. Let us suppose that we have a CATPart, in this example a vehicle rim as shown in the figure underneath:
+It is also possible to invert the process and import a CATPart in MATLAB. In this example we will export the vehicle rim shown in the figure underneath:
 
 <p align="center">
-<img src="/04_Pictures/Figure_2.png?raw=true" alt="The cube object which will be used as an example for this section"/>
+<img src="/04_Pictures/Figure_2.png?raw=true" alt="The CATPart which will be imported in MATLAB"/>
 </p>
 
-It is possible to export the CATPart to MATLAB. For this scope, the CATPart has to be first saved as .stl file, thus generating the file Rim.stl
-Once the stl file is saved, it is possible to import it directly in MATLAB. For this scope, the class [```stl_file```](../02_CATPART2MATLAB/stl_file.m) was created. Calling the class with the link where the .stl file is saved creates a MATLAB import of the .stl object:
+To import the CATPart in MATLAB, we have to save it as .stl file, thus creating the file _Rim.stl_. Once the stl file is saved, we can import it in MATLAB. For this scope, the class [```stl_file```](../02_CATPART2MATLAB/stl_file.m) was created. Calling the class with the link where the .stl file is saved creates a MATLAB import of the ._Rim.stl_:
 ```
-RIM = stl_file('Rim.stl')                    %Import Rim.stl in MATLAB with the class stl_file and assign it to the variable RIM
+RIM = stl_file('Rim.stl')                    % Import Rim.stl in MATLAB with the class stl_file and assign it to the variable RIM
 ```
-The class documents a set of functionalities such as translation, mirroring, rotation, and plot of the .stl file. These properties are documented in the class file. Furthermore, an example script that shows how to employ the properties of the ```stl_file``` class is documented in the script [```CATPART2MATLAB_example.m```](../02_CATPART2MATLAB/CATPART2MATLAB_example.m).
+The class ```stl_file``` contains a set of basic functionalities to translate, mirror, and rotate .stl files. These properties are documented in the class file. Furthermore, an example script that shows how to employ the properties of the ```stl_file``` is documented in [```CATPART2MATLAB_example.m```](../02_CATPART2MATLAB/CATPART2MATLAB_example.m).
 
-Exporting and modifying STL files is not the only way to plot 3D objects in MATLAB. To show the potential of the MATLAB functions, the ```MATLAB2CATPart_examples.m``` also shows how to plot elementary objects such as cubes and cylinders by solely using MATLAB functions. For this scope, the functions [plot_cube.m](../02_CATPART2MATLAB/plot_cube.m) and [```plot_cylinder.m```](../02_CATPART2MATLAB/plot_cylinder.m) are created. The script ```MATLAB2CATPart_examples.m``` combines MATLAB function with STL file to visualize a complex assembly - in this case, an electric vehicle powertrain - in MATLAB. As a final result, the script yields the following MATLAB plot:
+Exporting and modifying .stl files is not the only way to plot 3D objects in MATLAB. To show the potential of the MATLAB functions, ```MATLAB2CATPart_examples.m``` also shows how to plot elementary objects such as cubes and cylinders by solely using MATLAB functions. For this scope, the functions [plot_cube.m](../02_CATPART2MATLAB/plot_cube.m) and [```plot_cylinder.m```](../02_CATPART2MATLAB/plot_cylinder.m) are created. The script ```MATLAB2CATPart_examples.m``` combines MATLAB function with .stl files to visualize a complex assembly - in this case, an electric vehicle powertrain - in MATLAB. As a final result, the script yields the following MATLAB plot:
 
 <p align="center">
-<img src="/04_Pictures/Figure_3.png?raw=true" alt="The cube object which will be used as an example for this section"/>
+<img src="/04_Pictures/Figure_3.png?raw=true" alt="The resulting plot form the script CATPART2MATLAB_example"/>
 </p>
 
 # MATLAB2CATPRODUCT
@@ -116,14 +112,19 @@ The workflow of a MATLAB2CATPRODUCT is similar to a MATLAB2CATPART connection bu
 -  You can now connect these parameters with the local parameter declared in the Subproduct
 -  With this solution, you have a single Subproduct node (uin this case ```Parameters```) where it is possible to set all the Parameters of the assembly.
 
-In this repository, we already created a parametric CATProduct by following all the steps listed above: [```Cube_Assembly.CATProduct```](../03_MATLAB2CATPRODUCT/Cube_Assembly.CATProduct).
+In this repository, we already created a parametric CATProduct by following all the steps listed above: [Cube_Assembly.CATProduct](../03_MATLAB2CATPRODUCT/Cube_Assembly.CATProduct). The Assembly is shown underneath:
 
-This can be achieved as follows. First of all we have to retrieve (as already done in  MATLAB2CATPart) 
+<p align="center">
+<img src="/04_Pictures/Figure_4.png?raw=true" alt="The CATPart which will be imported in MATLAB"/>
+</p>
+
+
+This can be achieved as follows. First of all we have to create a connection with the document (as already done in  MATLAB2CATPart). **Attention: For the code to work correctly, `Cube_Assembly.CATProduct has to be opened in CATIA**.
 ```
 catia = actxserver('catia.application');                    VBA Code: Not required for this step
 Docs = get(catia,'Documents');                              VBA Code: Set Docs = CATIA.Documents
 ```
-Once the variables are initialized we can select the Product document containing the assembly:
+Once the variables are initialized we select the Product document containing the assembly:
 ```
 Docprod = invoke(Docs,'Item','Cube_Assembly.CATProduct');   VBA Code: Set Docprod = Docs.Item("Cube_Assembly.CATProduct")
 ```
