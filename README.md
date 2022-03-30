@@ -4,66 +4,66 @@ Developed by: Lorenzo Nicoletti, Institute of Automotive Technology, Technical U
 Used MATLAB Version: MATLAB R2020b
 Used CATIA Version: CATIA V5 6-R2018
 
-This repository contains a series of examples to create a direct connection between MATLAB and CATIA V5 **without having to use Excel**. This direct connection enables to update CATIA models from MATLAB and also to retrieve calculated data from CATIA to MATLAB
+This repository shows how to create a direct connection between MATLAB and CATIA **without having to use Excel**. This connection enables to update CATIA models from MATLAB and to plot CATParts in MATLAB.
 
 **Let me know in the comments if you have feedbacks or further examples you would like to see! I will try to add them!**
 
 # Background and Motivation
-For the ones who are not very confident with CATIA, the basic language to program in CATIA is VBA. Using the VBA editor (Tools/Macro/Visual Basic Editor) it is possible to automatize a broad set of tasks by building VBA Macros. VBA has a direct connection to CATIA but its editor is not one of the best programming environments and, if complex models are required, these models are usually implemented in other programs. One programming language that keeps gaining momentum among engineers is MATLAB and there are many cases where MATLAB-implemented models are connected with CATIA to visualize the results. In these cases, CATIA is often used exclusively for visualization purposes. We will denote this case as a MATLAB2CAD connection.
+The basic language to program in CATIA is VBA. Using the VBA editor (Tools/Macro/Visual Basic Editor) it is possible to automatize a broad set of tasks by building VBA Macros. VBA has a direct connection to CATIA but its editor is not one of the best programming environments and, if complex models are required, these models are usually implemented in other programs. One programming language that keeps gaining momentum among engineers is MATLAB and there are many cases where MATLAB-implemented models are connected with CATIA to visualize the results. In these cases, CATIA is often used exclusively for visualization purposes. We will denote this case as a MATLAB2CAD connection.
 
-When a MATLAB2CAD connection is required, the most common solution is to create a parametric model in CATIA and connect it with an Excel table. MATLAB can then calculate the required parameters and store them in the Excel table. Finally, once the Excel table is reclosed and saved, CATIA will notice that the entries of the table have been changed and will update. This process can take - depending on the CATIA model complexity - several minutes and requires the usage of three different programs (MATLAB, CATIA, and Excel). Therefore the question arises:
+the most common solution to implement a MATLAB2CAd connection is to create a parametric model in CATIA. Subsequently, the parameters of the CATIA model can be connected with an Excel table, which stores their values. MATLAB can then calculate the required parameters and store them in the Excel table. Finally, once the Excel table is reclosed and saved, CATIA will notice that the entries of the table have been changed and will update. This process can take - depending on the CATIA model complexity - several minutes and requires three different programs (MATLAB, CATIA, and Excel). Therefore the question arises:
 **is it possible to create a MATLAB2CAD connection without having to use Excel?** The answer is, of course, yes.
 
 In this repository, we will see: 
-- 1) How to update parametric CATParts from MATLAB
+- 1) How to update parametric CATParts from MATLAB (we denote this case as MATLAB2CATPART connection)
 - 2) How to create new objects (Sketches, Pads) in CATIA by using exclusively MATLAB code
-- 3) How to plot object created in CATIA in MATLAB (we denote this case as CATPART2MATLAB connection)
+- 3) How to plot CATIA parts in in MATLAB (we denote this case as CATPART2MATLAB connection)
 - 4) How to control and update parametric CATProducts from MATLAB (we denote this case as CATPRODUCT2MATLAB connection)
 
-# How can I implement more complex processes in a MATLAB2CATPART connection?
-In this repository we only show how very simple CATIA processes can be automatized in MATLAB. If you want to automatize more complex design processes and you have a basic knowledge of VBA, you can follow these steps:
+# Outlook for more complex implementations
+In this repository we only show how very simple CATIA processes can be automatized in MATLAB. If you want to automatize more complex design steps and you have a basic knowledge of VBA, you can follow these steps:
 
 - a) Activate the VBA macro recorder (More information to this regard [HERE](https://www.youtube.com/watch?v=kKFdi-owlXM)).
-- b) Conduct the set of manual tasks which you want to automatize in CATIA (for example create a new sketch, pad, etc.).
-- c) Once you are done you can stop the recorder.
-- d) In the VBA editor, you will see that most of your tasks (sadly some tasks are not recorded by default) will have been translated into VBA code.
-- e) Now you can translate this code in MATLAB and relaunch it from MATLAB to reproduce the same tasks in an automated way.
+- b) Conduct the set of manual tasks which you want to automatize in CATIA (create a sketch, pad, etc.).
+- c) Once you are done, stop the recorder.
+- d) In the VBA editor you will see that most of your tasks (some tasks are not recorded by default) will have been translated into VBA code.
+- e) Now you can translate this code in MATLAB.
 
-The last step (translating VBA in MATLAB code) may seem challenging. On the contrary, it is quite intuitive task. The scope of this repository is to show how most of the basis VBA tasks can be translated in MATLAB by using the commands "get", "invoke", and "set".
+Translating VBA into MATLAB code may seem challenging. On the contrary, it is a quite intuitive task. The scope of this repository is to show how VBA code can be translated into MATLAB by using the commands "get", "invoke", and "set".
 
 # MATLAB2CATPart
-As an example a cube (named Cube.CATPart) is given. The cube is built as parametrized CATIA models (More information regarding how to create a parametrized CATIA model can be found [HERE](https://grabcad.com/tutorials/parametric-design-in-catia-v5)) and its dimensions are controlled by the three parameters _Cube_length_, _Cube_width_, and _Cube_height_. With the three parameters, it is possible to change the cube dimensions. In the example shown in this section, we are going to see how to programmatically change the cube dimension with MATLAB. 
-More examples applied on the Cube.CATPart file are documented in [MATLAB2CATPart_examples.m](../01_MATLAB2CATPart/MATLAB2CATPart_examples.m).
+As an example a cube ([Cube.CATPart](../01_MATLAB2CATPart/Cube.CATPart)) is given. The cube is built as parametrized CATPart (More information regarding how to create a parametrized CATPart [HERE](https://grabcad.com/tutorials/parametric-design-in-catia-v5)) and its dimensions are controlled by three parameters: _Cube_length_, _Cube_width_, and _Cube_height_. In the example shown in this section, we are going to see how to programmatically change the cube dimension with MATLAB. 
+More examples applied on the Cube.CATPart are documented in [MATLAB2CATPart_examples.m](../01_MATLAB2CATPart/MATLAB2CATPart_examples.m).
 
 <p align="center">
 <img src="/04_Pictures/Figure_1.png?raw=true" alt="The cube object which will be used as an example for this section"/>
 </p>
 
-In the following paragraphs, the MATLAB code is shown next to the corresponding VBA code: this helps understanding how the VBA code can be translated into MATLAB code. First of all, MATLAB has to create a connection with CATIA. This is achieved as follows:
+In the following paragraphs, the MATLAB code is shown next to the corresponding VBA code: this helps understanding how the VBA code can be translated into MATLAB code. Attention: For the code to work correctly, Cube.CATPart has to be opened in CATIA. First of all, we create a MATLAB connection with CATIA:
 ```
 catia = actxserver('catia.application');                VBA Code: Not required for this step
 ```
-The variable ```catia``` represents a connection with the catia application. To select the open CATIA windows, the following line has to be added:
+The variable ```catia``` is the connection with the CATIA application. To select the currently opened CATIA windows, the following line has to be added:
 ```
 Docs = get(catia,'Documents');                          VBA Code: Set Docs = CATIA.Documents
 ```
-With this line, MATLAB assigns to the variable ```Docs``` all the opened windows in CATIA. It can be imagined, that the variable Docs contains all opened CATIA documents (CATParts, CATProducts, etc.). You can check how many Documents are opened by using the _count_ property:
+With this line, MATLAB assigns to the variable ```Docs``` all the opened windows in CATIA. The variable Docs contains a linkt to all opened CATIA documents (CATParts, CATProducts, etc.). You can check how many Documents are opened by using the _count_ property:
 ```
 Opened_Docs = get(Docs,count);                          VBA CODE: Opened_Docs = Docs.count
 ```
-Since the variable Docs contains ALL the opened documents, to change the cube properties we have to select the Cube.CATPart document. For this scope we can use the _Item_ property combined with the name of the CAD- Document:
+Since the variable Docs contains ALL the opened documents, to change the cube properties we have to select the Cube.CATPart document. For this scope we can use the _Item_ property:
 ```
 Docpart = invoke(Docs,'Item','Cube.CATPart');           VBA CODE: Set Docpart = Docs.Item("Cube.CATPart")          
 ```
-```Docpart``` selects the whole window of the Cube.CATPart document. To select the Part (the node denoted as _Cube_part_ in the figure) another command is required:
+```Docpart``` selects the CATIA window with Cube.CATPart. To select the Part (the node denoted as _Cube_part_ in the figure) another command is required:
 ```
 Cube = get(Docpart,'part');                             VBA CODE: Set Cube = Docpart.Part
 ```
-Now the variable ```Cube``` represents a direct connection to the node _Cube_part_. We can use this variable to access the _Cube_part_ properties and to change them. For example, if we want to change the Length of the cube, we first have to select the set of parameters:
+Now the variable ```Cube``` represents a direct connection to the node _Cube_part_. We can use this variable to access the _Cube_part_ properties. For example, if we want to change the Length of the cube, we first have to select its set of parameters:
 ```
 Parameters = get(Cube, 'Parameters');                   VBA CODE: Set Parameters = Cube.Parameters
 ```
-The variable ```Parameters``` contains all the Parameters of ```Cube```, including the parameters _Cube_length_, _Cube_width_, and _Cube_height_ (visible in the CATIA tree) as well as a set of further parameters which are not visible in the CATIA tree.
+The variable ```Parameters``` contains all the Parameters of ```Cube```, including _Cube_length_, _Cube_width_, and _Cube_height_ (visible in the CATIA tree) as well as a set of further parameters which are not visible in the CATIA tree.
 
 Let us suppose that we want to change _Cube_length_. First of all, we have to select from ```Parameters``` the corresponding Parameter _Cube_length_ and assign it to a new variable:
 ```
