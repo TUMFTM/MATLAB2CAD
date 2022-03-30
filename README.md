@@ -31,7 +31,7 @@ In this repository we only show how very simple CATIA processes can be automatiz
 
 Translating VBA into MATLAB code may seem challenging. On the contrary, it is a quite intuitive task. The scope of this repository is to show how VBA code can be translated into MATLAB by using the commands "get", "invoke", and "set".
 
-# MATLAB2CATPart
+# MATLAB2CATPART
 As an example a cube ([Cube.CATPart](../01_MATLAB2CATPart/Cube.CATPart)) is given. The cube is built as parametrized CATPart (More information regarding how to create a parametrized CATPart [HERE](https://grabcad.com/tutorials/parametric-design-in-catia-v5)) and its dimensions are controlled by three parameters: _Cube_length_, _Cube_width_, and _Cube_height_. In the example shown in this section, we are going to see how to programmatically change the cube dimension with MATLAB. 
 
 <p align="center">
