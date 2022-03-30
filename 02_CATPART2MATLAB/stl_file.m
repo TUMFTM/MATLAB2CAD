@@ -1,6 +1,6 @@
 classdef stl_file < handle
-    %UNTITLED6 Summary of this class goes here
-    %   Detailed explanation goes here
+    %stl_file: This class documents a series of basic methods for shifting,
+    %mirroring and rotating .stl objects.
     
     properties
         Cv
@@ -65,8 +65,7 @@ classdef stl_file < handle
             %                        STL.mirror('XY')
             % Further examples: STL.mirror('XY') -> The points are mirrored on the XY plane
             %                   STL.mirror('YZ') -> The points are mirrored on the YZ plane
-            %                   STL.mirror('XZ') -> The points are mirrored on the XZ plane
-                
+            %                   STL.mirror('XZ') -> The points are mirrored on the XZ plane              
                 switch mirror_plane
                     case 'XY'
                         % Mirror the object on the XY plane
@@ -89,14 +88,18 @@ classdef stl_file < handle
             %                   STL.rotate('Z',pi/4) -> Rotate on the Z axis for 90 degrees 
             
             switch axis
+                case 'X'
+                    rot_mat      = [1, 0 , 0; 0, cos(rot_angle), -sin(rot_angle); 0, sin(rot_angle), cos(rot_angle)]; %Rotation matrix along Z
+                    
+                case 'Y'
+                    rot_mat      = [cos(rot_angle), 0, sin(rot_angle); 0, 1, 0; -sin(rot_angle), 0, cos(rot_angle)]; %Rotation matrix along Z
                 
                 case 'Z'
-                    rot_mat      = [cos(rot_angle),sin(rot_angle),0; -sin(rot_angle),cos(rot_angle),0;0,0,1]; %Rotation matrix along Z
+                    rot_mat      = [cos(rot_angle), sin(rot_angle), 0; -sin(rot_angle), cos(rot_angle), 0; 0, 0, 1]; %Rotation matrix along Z
             end
             
-            %Rotate:
+            %Rotate the points of the .stl object:
             obj.Pts = (rot_mat*obj.Pts')';
-
         end
         
         %% Method for object plot
@@ -106,6 +109,9 @@ classdef stl_file < handle
             %                        STL.plot('FaceColor',[1,1,1])
             % Further examples: STL.plot('FaceColor',[1,1,1],'FaceAlpha',0.1)
             %                   STL.plot('FaceColor',[1,1,1],'EdgeColor',[1,1,1])
+                
+                % Set the view
+                view(-45,45);
 
                 % Create a triangulation object from the STL
                 stl_tri = triangulation(obj.Cv,obj.Pts);
@@ -117,15 +123,15 @@ classdef stl_file < handle
                     error('Error by the input assignement. The method plot_stl must be called following the input structure of the MATLAB function trisurf. For more information to this regard, check the documentation of the trisurf function');
                 end
                 
+                axis equal
+                
                 % Make figure on top:
                 figure(gcf);
 
                 % By appending stl_tri to the variable obj, it is possible
                 % to change the graphical properties of the object in a later step.
                 obj.Plot_handle = stl_tri;
-
-                % Set the axis equal otherwise the object will appear streched
-                axis equal
+              
         end
     end
 end

@@ -21,6 +21,7 @@
 %3) Plot the tires
 %4) Plot the battery
 %5) Plot the drive unit
+%6) Create a dynamic plot of the wheel using stl_file.rotation:
 
 %% 1) Inputs/Dimensions used for the plot
 clear
@@ -161,3 +162,27 @@ plot_cylinder(machine_radius,gearbox_length,[vehicle_wheelbase,(machine_length+g
 %Plot the driving shafts at the two axles:
 plot_cylinder(drive_shaft_diameter,vehicle_width-30,[0,0,0],'Y','FaceColor',[0,0,0]);
 plot_cylinder(drive_shaft_diameter,vehicle_width-30,[vehicle_wheelbase,0,0],'Y','FaceColor',[0,0,0]);
+
+
+%% 6) Create a dynamic plot of the wheel using stl_file.rotation: 
+% As final example we show how the rotation matrix can be used to create
+% dynamic plots, in this case of the rim.
+
+% Create a new figure
+figure('Name','Wheel_dynamic');
+
+% Load a new rim, in this example the positioning is not important
+RIM = stl_file('Rim.stl');
+
+
+% Iterate for 100 steps
+for i = 1: 100
+    
+    % For each step rotate the rim by 2*pi/100 along the Y axis
+    RIM.rotate('Y',-2*pi/100) 
+    
+    % Plot the rim
+    RIM.plot_stl('FaceColor',[211,211,211]/255, 'EdgeColor',[0,0,0],'EdgeAlpha',0.2);
+    drawnow
+    
+end

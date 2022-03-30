@@ -9,6 +9,7 @@
 %              repository.
 %              The code becomes more and more compact from example 1 to
 %              example 7
+%               BEFORE STARTING: Open the Assembly ../01_MATLAB2CATPart/Cube.CATPart in CATIA
 % ------------
 
 %% PREPROCESSING: The variables declared in this section are required for the other sections!
@@ -57,7 +58,7 @@ invoke(Cube_Window,'Activate');                        %Activate the "Cube.CATPa
 objview3=get(get(catia,'ActiveWindow'),'ActiveViewer');
 
 % The number denotes the file type (1 to 4)
-invoke(objview3,'CaptureToFile', 1, 'Screenshot_cube.bmp')
+invoke(objview3,'CaptureToFile', 1, 'Screenshot_cube.bmp');
 
 %% 2) Change the dimensions of the cube in "Cube.CATPart"
 %     The dimensions of the cube will be changed directly from this MATLAB
