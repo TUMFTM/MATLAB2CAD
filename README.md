@@ -119,7 +119,7 @@ In this repository, we already created a parametric CATProduct by following all 
 </p>
 
 
-This can be achieved as follows. First of all we have to create a connection with the document (as already done in  MATLAB2CATPart). **Attention: For the code to work correctly, `Cube_Assembly.CATProduct has to be opened in CATIA**.
+This can be achieved as follows. First of all we have to create a connection with the document (as already done in  MATLAB2CATPart). **Attention: For the code to work correctly, Cube_Assembly.CATProduct has to be opened in CATIA**.
 ```
 catia = actxserver('catia.application');                    VBA Code: Not required for this step
 Docs = get(catia,'Documents');                              VBA Code: Set Docs = CATIA.Documents
